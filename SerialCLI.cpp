@@ -40,7 +40,7 @@ void SerialCLI::_read(String ops)
             return;
         }
 
-                _serial->print(analogRead(pin));
+        _serial->print(analogRead(pin) / 1023.0 * 5);
         _serial->println(" V");
     }
     else if (ops.substring(0, 2) == "-d")
@@ -58,6 +58,11 @@ void SerialCLI::_read(String ops)
     {
         _serial->println("Invalid Option. Use read -a PIN# or read -d PIN#");
     }
+}
+
+void SerialCLI::_write(String ops)
+{
+    
 }
 
 int SerialCLI::parsePin(String str)
