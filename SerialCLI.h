@@ -1,5 +1,5 @@
-#ifndef SCLI_H
-#define SCLI_H
+#ifndef SERIALCLI_H
+#define SERIALCLI_H
 
 #include "Arduino.h"
 
@@ -11,7 +11,7 @@ private:
     void read_analog(String ops);
     void read_digital(String ops);
     void write_digital(String ops);
-    int parsePin(String str);
+    int parseNum(String str);
 
 public:
     SerialCLI();

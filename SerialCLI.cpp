@@ -29,15 +29,12 @@ void SerialCLI::parse()
         {
             _serial->println("Invalid Command");
         }
-
     }
 }
 
 void SerialCLI::read_analog(String ops)
 {
-
-    //Modify to only accept string of the number
-    int pin = parsePin(ops);
+    int pin = parseNum(ops);
     if (pin < 0)
     {
         _serial->println("pin# missing");
@@ -50,7 +47,7 @@ void SerialCLI::read_analog(String ops)
 
 void SerialCLI::read_digital(String ops)
 {
-    int pin = parsePin(ops);
+    int pin = parseNum(ops);
     if (pin < 0)
     {
         _serial->println("pin# missing");
@@ -62,17 +59,14 @@ void SerialCLI::read_digital(String ops)
 
 void SerialCLI::write_digital(String ops)
 {
-    
 }
 
-int SerialCLI::parsePin(String str)
+int SerialCLI::parseNum(String str)
 {
     int pinNumber;
-    int8_t spaceLoc = str.indexOf(" ");
+    pinNumber = str.toInt();
 
-    pinNumber = str.substring(spaceLoc).toInt();
-
-    if (pinNumber == 0 && str.substring(spaceLoc + 1) != "0")
+    if (pinNumber == 0 && str != "0")
     {
         return -1; //negative indicates error parsing
     }
