@@ -11,13 +11,13 @@ void SerialCLI::parse()
         String inputStr = _serial->readStringUntil('\n');
         Serial.println(inputStr);
 
-        int8_t s1 = inputStr.indexOf(" ");
-        String comStr = inputStr.substring(0, s1);
-        String opsStr = inputStr.substring(s1);
+        int8_t spaceLoc = inputStr.indexOf(" ");
+        String comStr = inputStr.substring(0, spaceLoc);
+        String opsStr = inputStr.substring(spaceLoc + 1);
 
         if (comStr == "read")
         {
-            analog_read(opsStr);
+            _read(opsStr);
         }
         else
         {
@@ -28,7 +28,48 @@ void SerialCLI::parse()
     }
 }
 
-void SerialCLI::analog_read(String options)
+void SerialCLI::_read(String ops)
 {
-    
+    if (ops.substring(0, 2) == "-a")
+    {
+        //Modify to only accept string of the number
+        int pin = parsePin(ops);
+        if (pin < 0)
+        {
+            _serial->println("pin# missing");
+            return;
+        }
+
+                _serial->print(analogRead(pin));
+        _serial->println(" V");
+    }
+    else if (ops.substring(0, 2) == "-d")
+    {
+        int pin = parsePin(ops);
+        if (pin < 0)
+        {
+            _serial->println("pin# missing");
+            return;
+        }
+        pinMode(pin, INPUT);
+        _serial->println(digitalRead(pin) ? "HIGH" : "LOW");
+    }
+    else
+    {
+        _serial->println("Invalid Option. Use read -a PIN# or read -d PIN#");
+    }
+}
+
+int SerialCLI::parsePin(String str)
+{
+    int pinNumber;
+    int8_t spaceLoc = str.indexOf(" ");
+
+    pinNumber = str.substring(spaceLoc).toInt();
+
+    if (pinNumber == 0 && str.substring(spaceLoc + 1) != "0")
+    {
+        return -1; //negative indicates error parsing
+    }
+    return pinNumber;
 }

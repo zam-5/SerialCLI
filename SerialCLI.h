@@ -8,7 +8,8 @@ class SerialCLI
 private:
     Stream *_serial;
 
-    void analog_read(String options);
+    void _read(String options);
+    int parsePin(String str);
 
 public:
     SerialCLI();

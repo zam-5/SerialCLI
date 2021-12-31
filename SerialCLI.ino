@@ -10,10 +10,5 @@ void setup()
 
 void loop()
 {
-    if (Serial.available() > 0)
-    {
-        String com = Serial.readStringUntil('\n');
-        Serial.println(com);
-    }
     scli.parse();
 }
