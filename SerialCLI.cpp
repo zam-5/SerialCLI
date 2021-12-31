@@ -14,53 +14,53 @@ void SerialCLI::parse()
         int8_t spaceLoc = inputStr.indexOf(" ");
         String comStr = inputStr.substring(0, spaceLoc);
         String opsStr = inputStr.substring(spaceLoc + 1);
+        _serial->print("opsStr: ");
+        _serial->println(opsStr);
 
-        if (comStr == "read")
+        if (comStr == "read-analog")
         {
-            _read(opsStr);
+            read_analog(opsStr);
+        }
+        else if (comStr == "read-digital")
+        {
+            read_digital(opsStr);
         }
         else
         {
             _serial->println("Invalid Command");
         }
 
-        // switch
     }
 }
 
-void SerialCLI::_read(String ops)
+void SerialCLI::read_analog(String ops)
 {
-    if (ops.substring(0, 2) == "-a")
-    {
-        //Modify to only accept string of the number
-        int pin = parsePin(ops);
-        if (pin < 0)
-        {
-            _serial->println("pin# missing");
-            return;
-        }
 
-        _serial->print(analogRead(pin) / 1023.0 * 5);
-        _serial->println(" V");
-    }
-    else if (ops.substring(0, 2) == "-d")
+    //Modify to only accept string of the number
+    int pin = parsePin(ops);
+    if (pin < 0)
     {
-        int pin = parsePin(ops);
-        if (pin < 0)
-        {
-            _serial->println("pin# missing");
-            return;
-        }
-        pinMode(pin, INPUT);
-        _serial->println(digitalRead(pin) ? "HIGH" : "LOW");
+        _serial->println("pin# missing");
+        return;
     }
-    else
-    {
-        _serial->println("Invalid Option. Use read -a PIN# or read -d PIN#");
-    }
+
+    _serial->print(analogRead(pin) / 1023.0 * 5);
+    _serial->println(" V");
 }
 
-void SerialCLI::_write(String ops)
+void SerialCLI::read_digital(String ops)
+{
+    int pin = parsePin(ops);
+    if (pin < 0)
+    {
+        _serial->println("pin# missing");
+        return;
+    }
+    pinMode(pin, INPUT);
+    _serial->println(digitalRead(pin) ? "HIGH" : "LOW");
+}
+
+void SerialCLI::write_digital(String ops)
 {
     
 }
