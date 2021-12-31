@@ -4,6 +4,6 @@ SerialCLI is a WIP Arduino library which allows for CLI style commication with a
 
 ## Example Syntax
 
-```
+```bash
   read analog 1
 ```
