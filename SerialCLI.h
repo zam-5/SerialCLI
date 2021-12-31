@@ -12,6 +12,7 @@ private:
     void read_digital(String ops);
     void write_digital(String ops);
     int parseNum(String str);
+    int8_t parseVoltage(String str);
 
 public:
     SerialCLI();

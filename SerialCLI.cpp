@@ -14,8 +14,6 @@ void SerialCLI::parse()
         int8_t spaceLoc = inputStr.indexOf(" ");
         String comStr = inputStr.substring(0, spaceLoc);
         String opsStr = inputStr.substring(spaceLoc + 1);
-        _serial->print("opsStr: ");
-        _serial->println(opsStr);
 
         if (comStr == "read-analog")
         {
@@ -24,6 +22,10 @@ void SerialCLI::parse()
         else if (comStr == "read-digital")
         {
             read_digital(opsStr);
+        }
+        else if (comStr == "write-digital")
+        {
+            write_digital(opsStr);
         }
         else
         {
@@ -59,6 +61,17 @@ void SerialCLI::read_digital(String ops)
 
 void SerialCLI::write_digital(String ops)
 {
+    int8_t spaceLoc = ops.indexOf(" ");
+    int pin = parseNum(ops.substring(0, spaceLoc));
+    int value = parseVoltage(ops.substring(spaceLoc + 1));
+
+    if (value < 0 || pin < 0)
+    {
+        _serial->println("pin or voltage missing");
+        return;
+    }
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, value);
 }
 
 int SerialCLI::parseNum(String str)
@@ -71,4 +84,20 @@ int SerialCLI::parseNum(String str)
         return -1; //negative indicates error parsing
     }
     return pinNumber;
+}
+
+int8_t SerialCLI::parseVoltage(String str)
+{
+    if (str == "HIGH")
+    {
+        return HIGH;
+    }
+    else if (str == "LOW")
+    {
+        return LOW;
+    }
+    else
+    {
+        return -1; // negative indicates error parsing
+    }
 }
