@@ -15,4 +15,5 @@ void loop()
         String com = Serial.readStringUntil('\n');
         Serial.println(com);
     }
+    scli.parse();
 }

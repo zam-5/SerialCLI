@@ -1,0 +1,4 @@
+** READ
+options:
+    (R) pin type (-d, -a). 1 arg (R), pin number
+
