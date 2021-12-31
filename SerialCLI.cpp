@@ -27,6 +27,10 @@ void SerialCLI::parse()
         {
             write_digital(opsStr);
         }
+        else if (comStr == "write-analog")
+        {
+            write_analog(opsStr);
+        }
         else
         {
             _serial->println("Invalid Command");
@@ -36,7 +40,7 @@ void SerialCLI::parse()
 
 void SerialCLI::read_analog(String ops)
 {
-    int pin = parseNum(ops);
+    int pin = parseInt(ops);
     if (pin < 0)
     {
         _serial->println("pin# missing");
@@ -49,7 +53,7 @@ void SerialCLI::read_analog(String ops)
 
 void SerialCLI::read_digital(String ops)
 {
-    int pin = parseNum(ops);
+    int pin = parseInt(ops);
     if (pin < 0)
     {
         _serial->println("pin# missing");
@@ -62,28 +66,56 @@ void SerialCLI::read_digital(String ops)
 void SerialCLI::write_digital(String ops)
 {
     int8_t spaceLoc = ops.indexOf(" ");
-    int pin = parseNum(ops.substring(0, spaceLoc));
+    int pin = parseInt(ops.substring(0, spaceLoc));
     int value = parseVoltage(ops.substring(spaceLoc + 1));
 
     if (value < 0 || pin < 0)
     {
-        _serial->println("pin or voltage missing");
+        _serial->println("pin or voltage error");
         return;
     }
     pinMode(pin, OUTPUT);
     digitalWrite(pin, value);
 }
 
-int SerialCLI::parseNum(String str)
+void SerialCLI::write_analog(String ops)
 {
-    int pinNumber;
-    pinNumber = str.toInt();
+    int8_t spaceLoc = ops.indexOf(" ");
+    int pin = parseInt(ops.substring(0, spaceLoc));
+    int value = parseInt(ops.substring(spaceLoc + 1));
 
-    if (pinNumber == 0 && str != "0")
+    if (value < 0 || value > 256 || pin < 0)
+    {
+        _serial->println("pin or voltage error");
+        return;
+    }
+    pinMode(pin, OUTPUT);
+    analogWrite(pin, value);
+}
+
+int SerialCLI::parseInt(String str)
+{
+    int num = str.toInt();
+
+    if (num == 0 && str != "0")
     {
         return -1; //negative indicates error parsing
     }
-    return pinNumber;
+    return num;
+}
+
+float SerialCLI::parseFloat(String str)
+{
+    float num = str.toFloat();
+
+    if (num == 0.0)
+    {
+        if (str != "0" || str != "0.0" || str != "0.00")
+        {
+            return -1; //negative indicates error parsing
+        }
+    }
+    return num;
 }
 
 int8_t SerialCLI::parseVoltage(String str)
