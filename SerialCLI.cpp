@@ -9,7 +9,6 @@ void SerialCLI::parse()
     if (_serial->available() > 0)
     {
         String inputStr = _serial->readStringUntil('\n');
-        Serial.println(inputStr);
 
         int8_t spaceLoc = inputStr.indexOf(" ");
         String comStr = inputStr.substring(0, spaceLoc);
