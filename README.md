@@ -1,6 +1,6 @@
-# SerialCLI
+# arduino_shell Library
 
-SerialCLI is a WIP Arduino library which allows for CLI style commication with an Arduino via the Serial Monitor.
+a_sh is a WIP Arduino library that allows user to create custom commands in an Arduino sketch, which can be executed via serial communication. For the most integrated experience, use the [a_sh CLI](https://github.com/zam-5/a_sh-CLI).
 
 ## Example Syntax
 
