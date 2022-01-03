@@ -25,7 +25,7 @@
     test
 */
 
-#include "../a_sh-lib.h"
+#include "a_sh-lib.h"
 
 //  Custom commands are defined with a function. Custom
 //  command fuinctions must have this function signature,

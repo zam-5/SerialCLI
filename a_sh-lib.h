@@ -13,22 +13,20 @@ const String PARAM_ERROR = "Invalid Params";
 const String HIGH_STR = "HIGH";
 const String LOW_STR = "LOW";
 
-namespace defaultCommands
-{
-    void read_analog(String ops, Stream *serial);
-    void read_digital(String ops, Stream *serial);
-    void write_digital(String ops, Stream *serial);
-    void write_analog(String ops, Stream *serial);
-}
+void read_analog(String ops, Stream *serial);
+void read_digital(String ops, Stream *serial);
+void write_digital(String ops, Stream *serial);
+void write_analog(String ops, Stream *serial);
+
 int parseInt(String str);
 float parseFloat(String str);
 int8_t parseVoltage(String str);
 
 static Command DEFAULT_COMMANDS[]{
-    Command(WRITE_ANALOG, defaultCommands::write_analog),
-    Command(WRITE_DIGITAL, defaultCommands::write_digital),
-    Command(READ_ANALOG, defaultCommands::read_analog),
-    Command(READ_DIGITAL, defaultCommands::read_digital)};
+    Command(WRITE_ANALOG, write_analog),
+    Command(WRITE_DIGITAL, write_digital),
+    Command(READ_ANALOG, read_analog),
+    Command(READ_DIGITAL, read_digital)};
 
 #define DEFAULT_COMMAND_COUNT 4
 
