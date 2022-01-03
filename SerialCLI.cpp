@@ -14,25 +14,25 @@ void SerialCLI::parse()
         String comStr = inputStr.substring(0, spaceLoc);
         String opsStr = inputStr.substring(spaceLoc + 1);
 
-        if (comStr == "read-analog")
+        if (comStr == READ_ANALOG)
         {
             read_analog(opsStr);
         }
-        else if (comStr == "read-digital")
+        else if (comStr == READ_DIGITAL)
         {
             read_digital(opsStr);
         }
-        else if (comStr == "write-digital")
+        else if (comStr == WRITE_DIGITAL)
         {
             write_digital(opsStr);
         }
-        else if (comStr == "write-analog")
+        else if (comStr == WRITE_ANALOG)
         {
             write_analog(opsStr);
         }
         else
         {
-            _serial->println("Invalid Command");
+            _serial->println(COMMAND_ERROR);
         }
     }
 }
@@ -42,7 +42,7 @@ void SerialCLI::read_analog(String ops)
     int pin = parseInt(ops);
     if (pin < 0)
     {
-        _serial->println("pin# missing");
+        _serial->println(PARAM_ERROR);
         return;
     }
 
@@ -55,11 +55,11 @@ void SerialCLI::read_digital(String ops)
     int pin = parseInt(ops);
     if (pin < 0)
     {
-        _serial->println("pin# missing");
+        _serial->println(PARAM_ERROR);
         return;
     }
     pinMode(pin, INPUT);
-    _serial->println(digitalRead(pin) ? "HIGH" : "LOW");
+    _serial->println(digitalRead(pin) ? HIGH_STR : LOW_STR);
 }
 
 void SerialCLI::write_digital(String ops)
@@ -70,7 +70,7 @@ void SerialCLI::write_digital(String ops)
 
     if (value < 0 || pin < 0)
     {
-        _serial->println("pin or voltage error");
+        _serial->println(PARAM_ERROR);
         return;
     }
     pinMode(pin, OUTPUT);
@@ -85,7 +85,7 @@ void SerialCLI::write_analog(String ops)
 
     if (value < 0 || value > 256 || pin < 0)
     {
-        _serial->println("pin or voltage error");
+        _serial->println(PARAM_ERROR);
         return;
     }
     pinMode(pin, OUTPUT);
@@ -119,11 +119,11 @@ float SerialCLI::parseFloat(String str)
 
 int8_t SerialCLI::parseVoltage(String str)
 {
-    if (str == "HIGH")
+    if (str == HIGH_STR)
     {
         return HIGH;
     }
-    else if (str == "LOW")
+    else if (str == LOW_STR)
     {
         return LOW;
     }
