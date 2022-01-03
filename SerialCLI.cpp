@@ -6,37 +6,34 @@ Command::Command(String name, void (*execute)(String ops, Stream *serial))
     _execute = execute;
 }
 
-SerialCLI::SerialCLI(Command *commandList, int count)
+SerialCLI::SerialCLI(Command *commandList, int count) : _comList{commandList}, _comCount{count}
 {
-    _comCount = count;
-    _comList = commandList;
 }
 
-void SerialCLI::begin(Stream &serial) { _serial = &serial; }
+void SerialCLI::begin(Stream &serial)
+{
+    _serial = &serial;
+}
 
 void SerialCLI::parse()
 {
     if (_serial->available() > 0)
     {
+        delay(10);
         String inputStr = _serial->readStringUntil('\n');
-        // _serial->print("inputStr: ");
-        // _serial->println(inputStr);
 
         int8_t spaceLoc = inputStr.indexOf(" ");
         String comStr = inputStr.substring(0, spaceLoc);
         String opsStr = inputStr.substring(spaceLoc + 1);
-        // _serial->print("  comStr: ");
-        // _serial->print(comStr);
-        // _serial->print("  opsStr: ");
-        // _serial->println(opsStr);
         for (int i = 0; i < _comCount; ++i)
         {
             if (_comList[i]._name == comStr)
             {
-                _serial->println(comStr);
                 _comList[i].execute(opsStr, _serial);
+                return;
             }
         }
+        _serial->println(COMMAND_ERROR);
     }
 }
 
@@ -136,12 +133,14 @@ int8_t parseVoltage(String str)
     }
 }
 
+static Command DEFAULT_COMMANDS[]{
+    Command(WRITE_ANALOG, write_analog),
+    Command(WRITE_DIGITAL, write_digital),
+    Command(READ_ANALOG, read_analog),
+    Command(READ_DIGITAL, read_digital)};
+
 SerialCLI buildDefault()
 {
-    Command comList[] = {
-        Command(WRITE_ANALOG, write_analog),
-        Command(WRITE_DIGITAL, write_digital),
-        Command(READ_ANALOG, read_analog),
-        Command(READ_DIGITAL, read_digital)};
-    return SerialCLI(comList, 4);
+
+    return SerialCLI(DEFAULT_COMMANDS, 4);
 }
