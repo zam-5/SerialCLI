@@ -21,7 +21,7 @@ int parseInt(String str);
 float parseFloat(String str);
 int8_t parseVoltage(String str);
 
-Command DEFAULT_COMMANDS[]{
+static Command DEFAULT_COMMANDS[]{
     Command(WRITE_ANALOG, write_analog),
     Command(WRITE_DIGITAL, write_digital),
     Command(READ_ANALOG, read_analog),
