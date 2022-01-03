@@ -25,9 +25,9 @@ void blinkPin(String ops, Stream *_serial)
 
 Command cList[] = {Command("test", testCom), Command("blink", blinkPin)};
 
-SerialCLI scli = buildCustom(cList, 2);
-
-unsigned long ts = 0;
+// SerialCLI scli = buildDefault();
+// SerialCLI scli = buildCustom(cList, 2);
+SerialCLI scli = buildCustomNoDefault(cList, 2);
 
 void setup()
 {

@@ -21,7 +21,7 @@ int parseInt(String str);
 float parseFloat(String str);
 int8_t parseVoltage(String str);
 
-static Command DEFAULT_COMMANDS[]{
+Command DEFAULT_COMMANDS[]{
     Command(WRITE_ANALOG, write_analog),
     Command(WRITE_DIGITAL, write_digital),
     Command(READ_ANALOG, read_analog),
@@ -34,16 +34,18 @@ class SerialCLI
 private:
     Stream *_serial;
     int _comCount;
+    bool _useDefault;
     Command *_customComList;
     Command *_defaultComList;
 
 public:
-    SerialCLI(Command defaultComList[], Command customComList[], int count);
+    SerialCLI(Command defaultComList[], Command customComList[], int count, bool _useDefault);
     void begin(Stream &serial);
     void parse();
 };
 
 SerialCLI buildDefault();
 SerialCLI buildCustom(Command customComList[], int count);
+SerialCLI buildCustomNoDefault(Command customComList[], int count);
 
 #endif

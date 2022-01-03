@@ -6,8 +6,8 @@ Command::Command(String name, void (*execute)(String ops, Stream *serial))
     _execute = execute;
 }
 
-SerialCLI::SerialCLI(Command *defaultComList, Command *customComList, int count)
-    : _defaultComList{defaultComList}, _customComList{customComList}, _comCount{count}
+SerialCLI::SerialCLI(Command *defaultComList, Command *customComList, int count, bool useDefault)
+    : _defaultComList{defaultComList}, _customComList{customComList}, _comCount{count}, _useDefault{useDefault}
 {
 }
 
@@ -26,12 +26,15 @@ void SerialCLI::parse()
         int8_t spaceLoc = inputStr.indexOf(" ");
         String comStr = inputStr.substring(0, spaceLoc);
         String opsStr = inputStr.substring(spaceLoc + 1);
-        for (int i = 0; i < DEFAULT_COMMAND_COUNT; ++i)
+        if (_useDefault)
         {
-            if (_defaultComList[i]._name == comStr)
+            for (int i = 0; i < DEFAULT_COMMAND_COUNT; ++i)
             {
-                _defaultComList[i].execute(opsStr, _serial);
-                return;
+                if (_defaultComList[i]._name == comStr)
+                {
+                    _defaultComList[i].execute(opsStr, _serial);
+                    return;
+                }
             }
         }
         for (int i = 0; i < _comCount; ++i)
@@ -144,10 +147,15 @@ int8_t parseVoltage(String str)
 
 SerialCLI buildDefault()
 {
-    return SerialCLI(DEFAULT_COMMANDS, nullptr, 0);
+    return SerialCLI(DEFAULT_COMMANDS, nullptr, 0, true);
 }
 
 SerialCLI buildCustom(Command customComList[], int count)
 {
-    return SerialCLI(DEFAULT_COMMANDS, customComList, count);
+    return SerialCLI(DEFAULT_COMMANDS, customComList, count, true);
+}
+
+SerialCLI buildCustomNoDefault(Command customComList[], int count)
+{
+    return SerialCLI(nullptr, customComList, count, false);
 }
