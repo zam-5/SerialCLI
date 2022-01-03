@@ -6,7 +6,8 @@ Command::Command(String name, void (*execute)(String ops, Stream *serial))
     _execute = execute;
 }
 
-SerialCLI::SerialCLI(Command *commandList, int count) : _comList{commandList}, _comCount{count}
+SerialCLI::SerialCLI(Command *defaultComList, Command *customComList, int count)
+    : _defaultComList{defaultComList}, _customComList{customComList}, _comCount{count}
 {
 }
 
@@ -25,11 +26,19 @@ void SerialCLI::parse()
         int8_t spaceLoc = inputStr.indexOf(" ");
         String comStr = inputStr.substring(0, spaceLoc);
         String opsStr = inputStr.substring(spaceLoc + 1);
+        for (int i = 0; i < DEFAULT_COMMAND_COUNT; ++i)
+        {
+            if (_defaultComList[i]._name == comStr)
+            {
+                _defaultComList[i].execute(opsStr, _serial);
+                return;
+            }
+        }
         for (int i = 0; i < _comCount; ++i)
         {
-            if (_comList[i]._name == comStr)
+            if (_customComList[i]._name == comStr)
             {
-                _comList[i].execute(opsStr, _serial);
+                _customComList[i].execute(opsStr, _serial);
                 return;
             }
         }
@@ -133,14 +142,12 @@ int8_t parseVoltage(String str)
     }
 }
 
-static Command DEFAULT_COMMANDS[]{
-    Command(WRITE_ANALOG, write_analog),
-    Command(WRITE_DIGITAL, write_digital),
-    Command(READ_ANALOG, read_analog),
-    Command(READ_DIGITAL, read_digital)};
-
 SerialCLI buildDefault()
 {
+    return SerialCLI(DEFAULT_COMMANDS, nullptr, 0);
+}
 
-    return SerialCLI(DEFAULT_COMMANDS, 4);
+SerialCLI buildCustom(Command customComList[], int count)
+{
+    return SerialCLI(DEFAULT_COMMANDS, customComList, count);
 }

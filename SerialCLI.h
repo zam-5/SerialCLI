@@ -2,6 +2,7 @@
 #define SERIALCLI_H
 
 #include "Arduino.h"
+#include "Command.h"
 
 const String READ_ANALOG = "0";
 const String READ_DIGITAL = "1";
@@ -20,33 +21,29 @@ int parseInt(String str);
 float parseFloat(String str);
 int8_t parseVoltage(String str);
 
-class Command
-{
-private:
-    void (*_execute)(String ops, Stream *serial);
+static Command DEFAULT_COMMANDS[]{
+    Command(WRITE_ANALOG, write_analog),
+    Command(WRITE_DIGITAL, write_digital),
+    Command(READ_ANALOG, read_analog),
+    Command(READ_DIGITAL, read_digital)};
 
-public:
-    String _name;
-    Command(String name, void (*execute)(String ops, Stream *serial));
-    void execute(String ops, Stream *serial)
-    {
-        (*_execute)(ops, serial);
-    }
-};
+#define DEFAULT_COMMAND_COUNT 4
 
 class SerialCLI
 {
 private:
     Stream *_serial;
     int _comCount;
-    Command *_comList;
+    Command *_customComList;
+    Command *_defaultComList;
 
 public:
-    SerialCLI(Command commandList[], int count);
+    SerialCLI(Command defaultComList[], Command customComList[], int count);
     void begin(Stream &serial);
     void parse();
 };
 
 SerialCLI buildDefault();
+SerialCLI buildCustom(Command customComList[], int count);
 
 #endif

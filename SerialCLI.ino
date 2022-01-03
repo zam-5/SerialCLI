@@ -1,6 +1,31 @@
 #include "SerialCLI.h"
 
-SerialCLI scli = buildDefault();
+void testCom(String ops, Stream *_serial)
+{
+    _serial->println("Ok");
+}
+
+void blinkPin(String ops, Stream *_serial)
+{
+    int pin = parseInt(ops);
+    if (pin < 0)
+    {
+        _serial->println(PARAM_ERROR);
+        return;
+    }
+    pinMode(pin, OUTPUT);
+    for (int i = 0; i < 5; ++i)
+    {
+        digitalWrite(pin, HIGH);
+        delay(1000);
+        digitalWrite(pin, LOW);
+        delay(1000);
+    }
+}
+
+Command cList[] = {Command("test", testCom), Command("blink", blinkPin)};
+
+SerialCLI scli = buildCustom(cList, 2);
 
 unsigned long ts = 0;
 
@@ -12,7 +37,5 @@ void setup()
 
 void loop()
 {
-    //delay(4000);
-    //Serial.println("test");
     scli.parse();
 }
