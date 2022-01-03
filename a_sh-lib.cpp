@@ -1,4 +1,11 @@
-#include "SerialCLI.h"
+/*
+  a_sh-lib.cpp - Library for running commands on an 
+  Arduino over SPI shell.
+  Created by Max Royer, January 2022.
+  Licensed under GPL-3.0.
+*/
+
+#include "a_sh-lib.h"
 
 Command::Command(String name, void (*execute)(String ops, Stream *serial))
 {
@@ -6,17 +13,17 @@ Command::Command(String name, void (*execute)(String ops, Stream *serial))
     _execute = execute;
 }
 
-SerialCLI::SerialCLI(Command *defaultComList, Command *customComList, int count, bool useDefault)
+ArduinoShell::ArduinoShell(Command *defaultComList, Command *customComList, int count, bool useDefault)
     : _defaultComList{defaultComList}, _customComList{customComList}, _comCount{count}, _useDefault{useDefault}
 {
 }
 
-void SerialCLI::begin(Stream &serial)
+void ArduinoShell::begin(Stream &serial)
 {
     _serial = &serial;
 }
 
-void SerialCLI::parse()
+void ArduinoShell::parse()
 {
     if (_serial->available() > 0)
     {
@@ -145,17 +152,17 @@ int8_t parseVoltage(String str)
     }
 }
 
-SerialCLI buildDefault()
+ArduinoShell buildDefault()
 {
-    return SerialCLI(DEFAULT_COMMANDS, nullptr, 0, true);
+    return ArduinoShell(DEFAULT_COMMANDS, nullptr, 0, true);
 }
 
-SerialCLI buildCustom(Command customComList[], int count)
+ArduinoShell buildCustom(Command customComList[], int count)
 {
-    return SerialCLI(DEFAULT_COMMANDS, customComList, count, true);
+    return ArduinoShell(DEFAULT_COMMANDS, customComList, count, true);
 }
 
-SerialCLI buildCustomNoDefault(Command customComList[], int count)
+ArduinoShell buildCustomNoDefault(Command customComList[], int count)
 {
-    return SerialCLI(nullptr, customComList, count, false);
+    return ArduinoShell(nullptr, customComList, count, false);
 }
