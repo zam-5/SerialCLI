@@ -12,23 +12,41 @@ const String PARAM_ERROR = "Invalid Params";
 const String HIGH_STR = "HIGH";
 const String LOW_STR = "LOW";
 
+void read_analog(String ops, Stream *serial);
+void read_digital(String ops, Stream *serial);
+void write_digital(String ops, Stream *serial);
+void write_analog(String ops, Stream *serial);
+int parseInt(String str);
+float parseFloat(String str);
+int8_t parseVoltage(String str);
+
+class Command
+{
+private:
+    void (*_execute)(String ops, Stream *serial);
+
+public:
+    String _name;
+    Command(String name, void (*execute)(String ops, Stream *serial));
+    void execute(String ops, Stream *serial)
+    {
+        (*_execute)(ops, serial);
+    }
+};
+
 class SerialCLI
 {
 private:
     Stream *_serial;
-
-    void read_analog(String ops);
-    void read_digital(String ops);
-    void write_digital(String ops);
-    void write_analog(String ops);
-    int parseInt(String str);
-    float parseFloat(String str);
-    int8_t parseVoltage(String str);
+    int _comCount;
+    Command *_comList;
 
 public:
-    SerialCLI();
+    SerialCLI(Command commandList[], int count);
     void begin(Stream &serial);
     void parse();
 };
+
+SerialCLI buildDefault();
 
 #endif
