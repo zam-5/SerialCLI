@@ -1,8 +1,23 @@
-ArduinoShell            KEYWORD1
-Command                 KEYWORD1
-buildDefault            KEYWORD2
-buildCustom             KEYWORD2
-buildCustomNoDefault    KEYWORD2
-parseInt                KEYWORD2
-parseFloat              KEYWORD2
-parseVoltage            KEYWORD2
+###########################################
+# Syntax Coloring Map For DHT nonblocking library
+###########################################
+
+###########################################
+# Datatypes (KEYWORD1)
+###########################################
+
+ArduinoShell	KEYWORD1
+Command	KEYWORD1
+
+###########################################
+# Methods and Functions (KEYWORD2)
+###########################################
+
+buildDefault	KEYWORD2
+buildCustom	KEYWORD2
+buildCustomNoDefault	KEYWORD2
+parseInt	KEYWORD2
+parseFloat	KEYWORD2
+parseVoltage	KEYWORD2
+parse	KEYWORD2
+begin	KEYWORD2
