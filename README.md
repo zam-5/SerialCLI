@@ -4,6 +4,10 @@
 
 a_sh, short for arduino_shell, is a WIP Arduino library that allows user to create custom commands in an Arduino sketch, which can be executed via serial communication. For the most integrated experience, use the [a_sh CLI](https://github.com/zam-5/a_sh-CLI).
 
+## Installation
+
+[Download](https://github.com/zam-5/a_sh-lib/releases/download/v0.1.0/a_sh-lib.zip) the zipped version of the library here. Follow these [instructions](https://www.arduino.cc/en/Guide/Libraries) for installation.
+
 ## Usage
 
 This section will contain a basic overview of how to use a_sh. Read through the basic_custom.ino example in order for a step-by-step guide to using a_sh.
