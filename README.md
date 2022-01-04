@@ -35,7 +35,7 @@ If you don't plan to add custom commands, a sketch running the default shell can
   }
 ```
 
-The sketch starts by including the a_sh library, and creating the default shell. In the setup function, the transmission rate is set to 9600 baud on the default serial port. Then the `begin` method is called on the shell. `begin` requires one argument, the Stream object (`Serial` inherits from the `Stream` class) which will be used for communication.
+The sketch starts by including the a_sh library, and creating the default shell. In the setup function, the transmission rate is set to 9600 baud on the default serial port. Then the `begin` method is called on the shell. `begin` requires one argument, the `Stream` object (`Serial` inherits from the `Stream` class) which will be used for communication.
 
 Once the shell and serial interface are setup, simply call the `parse` method on the shell inside `loop()`. Each time `parse` is called, it will check if any data has been recieved from the serial interface. Running the shell is now just requires uploading the sketch, and runnning [a_sh CLI](https://github.com/zam-5/a_sh-CLI).
 
