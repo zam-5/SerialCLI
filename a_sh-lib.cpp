@@ -65,8 +65,7 @@ void read_analog(String ops, Stream *serial)
         return;
     }
 
-    serial->print(analogRead(pin) / 1023.0 * 5);
-    serial->println(" V");
+    serial->println(analogRead(pin));
 }
 
 void read_digital(String ops, Stream *serial)
