@@ -77,7 +77,7 @@ void read_digital(String ops, Stream *serial)
         return;
     }
     pinMode(pin, INPUT);
-    serial->println(digitalRead(pin) ? HIGH_STR : LOW_STR);
+    serial->println(digitalRead(pin) /*? HIGH_STR : LOW_STR*/);
 }
 
 void write_digital(String ops, Stream *serial)
