@@ -3,3 +3,4 @@ release/
 notes.txt
 a_sh
 a_sh-lib.code-workspace
+dev-install.sh
