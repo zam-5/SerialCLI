@@ -2,7 +2,7 @@
 
 ## About
 
-a_sh, short for arduino_shell, is a WIP Arduino library that allows user to create custom commands in an Arduino sketch, which can be executed via serial communication. For the most integrated experience, use the [a_sh CLI](https://github.com/zam-5/a_sh-CLI).
+a_sh, short for arduino_shell, is a WIP Arduino library that allows user to create custom commands in an Arduino sketch, which can be executed via serial communication. For the most integrated experience, use the [a_sh CLI](https://github.com/zam-5/a_sh-CLI) (WIP).
 
 ## Installation
 
